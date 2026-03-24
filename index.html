@@ -3,37 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sukhum Udom Rak School</title>
+    <title>Sukhum Udom Rak - Hardcore Arcade</title>
     <style>
-        body { margin: 0; padding: 0; background-color: #1a252c; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; touch-action: manipulation; }
-        #app-container { width: 100%; max-width: 800px; height: 100%; max-height: 600px; background-color: #2c3e50; border-radius: 15px; position: relative; display: flex; flex-direction: column; overflow: hidden; }
+        body { margin: 0; padding: 0; background-color: #0d0d0d; color: #fff; font-family: 'Courier New', Courier, monospace; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; }
+        #app-container { width: 100%; max-width: 800px; height: 100%; max-height: 600px; background-color: #111; border: 4px solid #ffe600; border-radius: 15px; position: relative; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 0 20px #ffe600, inset 0 0 20px rgba(255, 230, 0, 0.2); }
+        .neon-text { color: #ffe600; text-shadow: 0 0 5px #ffe600, 0 0 10px #ffe600; text-align: center; }
         
-        /* ANA MENÜ */
-        #main-menu { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; }
-        h1 { color: #f1c40f; margin-bottom: 5px; font-size: 28px; }
-        h2 { color: #ecf0f1; font-size: 18px; margin-bottom: 30px; }
-        .character-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 90%; }
-        .char-btn { background-color: #34495e; border: 3px solid; border-radius: 15px; padding: 20px; color: white; font-size: 20px; font-weight: bold; cursor: pointer; }
-        .char-btn.math { border-color: #e74c3c; } .char-btn.english { border-color: #3498db; }
-        .char-btn.pe { border-color: #2ecc71; } .char-btn.principal { border-color: #9b59b6; }
+        #main-menu { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 20px; box-sizing: border-box; background: radial-gradient(circle, #222 0%, #000 100%); }
+        h1 { font-size: 32px; margin-bottom: 5px; } h2 { font-size: 16px; margin-bottom: 30px; color: #ccc; }
+        .character-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; max-width: 600px; }
+        .char-btn { background-color: #000; border: 2px solid #ffe600; border-radius: 10px; padding: 15px; color: #ffe600; font-size: 18px; font-weight: bold; font-family: 'Courier New', Courier, monospace; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 10px #ffe600; transition: transform 0.1s; }
+        .char-btn:active { transform: scale(0.95); box-shadow: 0 0 5px #ffe600; }
+        .btn-desc { font-size: 12px; color: #fff; margin-top: 8px; text-shadow: none; }
+        .emoji-icon { font-size: 30px; margin-bottom: 5px; }
 
-        /* OYUN EKRANLARI */
-        .game-screen { display: none; flex-direction: column; height: 100%; padding: 20px; position: relative; }
-        .back-btn { position: absolute; top: 15px; left: 15px; background: #e74c3c; color: white; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; z-index: 100; }
-        .ui-bar { display: flex; justify-content: space-between; font-size: 20px; font-weight: bold; margin-top: 40px; margin-bottom: 10px; }
-        .board { font-size: 20px; color: #f1c40f; text-align: center; margin-bottom: 20px; font-weight: bold; }
-        
-        /* POBMEK STİLLERİ */
-        #pobmek-img { width: 120px; height: 120px; display: block; margin: 0 auto; object-fit: contain; }
-        .students-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; justify-items: center; margin-top: 20px; }
-        .student-img { width: 90px; height: 90px; background: rgba(255,255,255,0.1); border-radius: 10px; object-fit: contain; }
+        .game-screen { display: none; flex-direction: column; height: 100%; padding: 15px; position: relative; box-sizing: border-box; }
+        .back-btn { position: absolute; top: 15px; left: 15px; background: #000; color: #ffe600; border: 2px solid #ffe600; padding: 10px; font-family: monospace; font-weight: bold; z-index: 100; cursor: pointer; box-shadow: 0 0 5px #ffe600; }
+        .ui-bar { display: flex; justify-content: space-between; font-size: 20px; margin-top: 50px; margin-bottom: 10px; z-index: 10; font-weight: bold; color: #fff; }
+        .board { font-size: 22px; height: 30px; margin-bottom: 10px; z-index: 10; }
+        .game-area { flex-grow: 1; position: relative; overflow: hidden; border-radius: 10px; border: 2px solid #ffe600; }
+
+        /* POBMEK - 12 Öğrenci */
+        #game-pobmek .game-area { background: #1a3c34; border: 5px solid #8b5a2b; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        #pobmek-emoji { font-size: 60px; margin-bottom: 10px; transition: transform 0.2s; }
+        .students-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 95%; justify-items: center; }
+        .student-box { font-size: 45px; background: rgba(0,0,0,0.3); border-radius: 10px; padding: 5px; border: 2px solid transparent; transition: 0.1s; cursor: pointer; }
         .disabled { pointer-events: none; opacity: 0.7; }
 
-        /* SODCHUEN STİLLERİ */
-        .doors-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; flex-grow: 1; margin-top: 10px; }
-        .door { background-color: #7f8c8d; border-radius: 10px; display: flex; justify-content: center; align-items: flex-end; overflow: hidden; position: relative; cursor: pointer; border: 4px solid #34495e; }
-        .door img { width: 80%; height: 80%; object-fit: contain; display: none; /* Başta gizli */ transform: translateY(100%); transition: transform 0.1s; }
-        .door img.show { display: block; transform: translateY(0); }
+        /* SODCHUEN - 12 Kapı */
+        #game-sodchuen .game-area { background: #2c3e50; }
+        .doors-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; height: 100%; padding: 5px; box-sizing: border-box; }
+        .door { background-color: #111; border: 2px solid #ffe600; border-radius: 5px; display: flex; justify-content: center; align-items: flex-end; overflow: hidden; position: relative; }
+        .door-content { font-size: 50px; transform: translateY(100%); transition: transform 0.08s; display: none; margin-bottom: -5px; }
+        .door-content.show { display: block; transform: translateY(0); }
+
+        /* SOLAR - Aşırı Yağmur */
+        #game-solar .game-area { background: #1f2739; }
+        #solar-player { position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); font-size: 45px; z-index: 2;}
+        #solar-kids { position: absolute; bottom: 0; width: 100%; height: 80px; background: repeating-linear-gradient(45deg, #222, #222 10px, #333 10px, #333 20px); border-top: 2px solid #ffe600; text-align: center; font-size: 28px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; align-content: center; z-index: 1; line-height: 1;}
+        .falling-item { position: absolute; font-size: 40px; display: flex; justify-content: center; align-items: center; z-index: 3;}
+
+        /* JEE - Sürü ve Hassas Zamanlama */
+        #game-jee .game-area { background: repeating-linear-gradient(90deg, #d35400, #d35400 30px, #e67e22 30px, #e67e22 60px); display: flex; flex-direction: column; }
+        #jee-track { position: relative; flex-grow: 1; border-bottom: 4px solid #fff; margin: 20px 0; }
+        #jee-safe-zone { position: absolute; right: 0; top: 0; width: 90px; height: 100%; background: rgba(46, 204, 113, 0.4); border-left: 4px dashed #2ecc71; display:flex; align-items:center; justify-content:center; font-size: 30px; color:#fff; font-weight:bold; text-align:center;}
+        #jee-students { position: absolute; left: 10px; bottom: 5px; font-size: 40px; line-height: 1; white-space: pre;}
+        #jee-teacher { position: absolute; right: 20px; top: 10px; font-size: 50px; border: 4px solid #fff; border-radius: 50%; width: 70px; height: 70px; display: flex; justify-content: center; align-items: center; background: #000; }
+        #jee-run-btn { width: 90%; margin: 10px auto; padding: 20px; font-size: 24px; font-weight: bold; background: #000; color: #ffe600; border: 2px solid #ffe600; text-align: center; font-family: monospace; cursor: pointer; box-shadow: 0 0 10px #ffe600; }
+        #jee-run-btn:active { background: #ffe600; color: #000; }
     </style>
 </head>
 <body>
@@ -41,166 +58,301 @@
     <div id="app-container">
         
         <div id="main-menu">
-            <h1>SUKHUM UDOM RAK SCHOOL</h1>
-            <h2>Select a teacher to start!</h2>
+            <h1 class="neon-text">LOVE YOU TEACHER</h1>
+            <h2>HARDCORE ARCADE SHIFT</h2>
             <div class="character-grid">
-                <button class="char-btn math" onclick="loadGame('pobmek')">POBMEK<br><span style="font-size:14px;">Math - Find the Naughty</span></button>
-                <button class="char-btn english" onclick="loadGame('solar')">SOLAR<br><span style="font-size:14px;">English - Protect Kids</span></button>
-                <button class="char-btn pe" onclick="loadGame('jee')">JEE<br><span style="font-size:14px;">P.E. - Green Light</span></button>
-                <button class="char-btn principal" onclick="loadGame('sodchuen')">SODCHUEN<br><span style="font-size:14px;">Principal - Catch Naughty</span></button>
+                <div class="char-btn" onclick="loadGame('pobmek')"><span class="emoji-icon">☁️</span> POBMEK<div class="btn-desc">Find in Chaos</div></div>
+                <div class="char-btn" onclick="loadGame('solar')"><span class="emoji-icon">☀️</span> SOLAR<div class="btn-desc">Bullet Hell</div></div>
+                <div class="char-btn" onclick="loadGame('jee')"><span class="emoji-icon">👨</span> JEE<div class="btn-desc">Extreme Red Light</div></div>
+                <div class="char-btn" onclick="loadGame('sodchuen')"><span class="emoji-icon">👩</span> SODCHUEN<div class="btn-desc">Whack Madness</div></div>
             </div>
         </div>
 
         <div id="game-pobmek" class="game-screen">
-            <button class="back-btn" onclick="goToMenu()">← BACK</button>
-            <div class="ui-bar"><span id="p-score">Score: 0</span><span id="p-time">Time: --</span></div>
-            <div id="pobmek-board" class="board">Ready?</div>
-            <img id="pobmek-img" src="pobmek_back.png" alt="Pobmek">
-            <div id="p-students" class="students-grid disabled">
-                <img class="student-img" id="stu-0" onclick="checkPobmek(0)" src="student_normal.png">
-                <img class="student-img" id="stu-1" onclick="checkPobmek(1)" src="student_normal.png">
-                <img class="student-img" id="stu-2" onclick="checkPobmek(2)" src="student_normal.png">
-                <img class="student-img" id="stu-3" onclick="checkPobmek(3)" src="student_normal.png">
+            <button class="back-btn" onclick="goToMenu()">BACK</button>
+            <div class="ui-bar"><span id="p-score">SCORE: 0</span><span id="p-time">TIME: --</span></div>
+            <div id="pobmek-board" class="neon-text board">READY?</div>
+            <div class="game-area">
+                <div id="pobmek-emoji">☁️</div>
+                <div id="p-students" class="students-grid disabled">
+                    <div class="student-box" onclick="checkPobmek(0)" id="stu-0"></div><div class="student-box" onclick="checkPobmek(1)" id="stu-1"></div>
+                    <div class="student-box" onclick="checkPobmek(2)" id="stu-2"></div><div class="student-box" onclick="checkPobmek(3)" id="stu-3"></div>
+                    <div class="student-box" onclick="checkPobmek(4)" id="stu-4"></div><div class="student-box" onclick="checkPobmek(5)" id="stu-5"></div>
+                    <div class="student-box" onclick="checkPobmek(6)" id="stu-6"></div><div class="student-box" onclick="checkPobmek(7)" id="stu-7"></div>
+                    <div class="student-box" onclick="checkPobmek(8)" id="stu-8"></div><div class="student-box" onclick="checkPobmek(9)" id="stu-9"></div>
+                    <div class="student-box" onclick="checkPobmek(10)" id="stu-10"></div><div class="student-box" onclick="checkPobmek(11)" id="stu-11"></div>
+                </div>
             </div>
         </div>
 
         <div id="game-sodchuen" class="game-screen">
-            <button class="back-btn" onclick="goToMenu()">← BACK</button>
-            <div class="ui-bar"><span id="s-score">Score: 0</span><span id="s-time">Time: 30</span></div>
-            <div id="sodchuen-board" class="board">Catch Naughty Students! Don't tap Teachers!</div>
-            <div class="doors-grid">
-                <div class="door" onclick="whack(0)"><img id="s-char-0" src=""></div>
-                <div class="door" onclick="whack(1)"><img id="s-char-1" src=""></div>
-                <div class="door" onclick="whack(2)"><img id="s-char-2" src=""></div>
-                <div class="door" onclick="whack(3)"><img id="s-char-3" src=""></div>
-                <div class="door" onclick="whack(4)"><img id="s-char-4" src=""></div>
-                <div class="door" onclick="whack(5)"><img id="s-char-5" src=""></div>
+            <button class="back-btn" onclick="goToMenu()">BACK</button>
+            <div class="ui-bar"><span id="s-score">SCORE: 0</span><span id="s-time">TIME: 30</span></div>
+            <div id="sodchuen-board" class="neon-text board">CATCH 😈! AVOID ☁️!</div>
+            <div class="game-area">
+                <div class="doors-grid">
+                    <div class="door" onclick="whack(0)"><div class="door-content" id="s-char-0"></div></div><div class="door" onclick="whack(1)"><div class="door-content" id="s-char-1"></div></div>
+                    <div class="door" onclick="whack(2)"><div class="door-content" id="s-char-2"></div></div><div class="door" onclick="whack(3)"><div class="door-content" id="s-char-3"></div></div>
+                    <div class="door" onclick="whack(4)"><div class="door-content" id="s-char-4"></div></div><div class="door" onclick="whack(5)"><div class="door-content" id="s-char-5"></div></div>
+                    <div class="door" onclick="whack(6)"><div class="door-content" id="s-char-6"></div></div><div class="door" onclick="whack(7)"><div class="door-content" id="s-char-7"></div></div>
+                    <div class="door" onclick="whack(8)"><div class="door-content" id="s-char-8"></div></div><div class="door" onclick="whack(9)"><div class="door-content" id="s-char-9"></div></div>
+                    <div class="door" onclick="whack(10)"><div class="door-content" id="s-char-10"></div></div><div class="door" onclick="whack(11)"><div class="door-content" id="s-char-11"></div></div>
+                </div>
             </div>
         </div>
 
-        <div id="game-solar" class="game-screen"><button class="back-btn" onclick="goToMenu()">← BACK</button><h2 style="text-align:center; margin-top:60px;">Solar Coming Soon...</h2></div>
-        <div id="game-jee" class="game-screen"><button class="back-btn" onclick="goToMenu()">← BACK</button><h2 style="text-align:center; margin-top:60px;">Jee Coming Soon...</h2></div>
+        <div id="game-solar" class="game-screen">
+            <button class="back-btn" onclick="goToMenu()">BACK</button>
+            <div class="ui-bar"><span id="sol-score">SCORE: 0</span><span id="sol-health">HEALTH: 3</span></div>
+            <div id="solar-board" class="neon-text board">BLOCK ✈️! LET ⭐ PASS!</div>
+            <div id="solar-area" class="game-area">
+                <div id="solar-kids">👦👧🧒👦<br>👧🧒👦👧</div>
+                <div id="solar-player">☀️</div>
+            </div>
+        </div>
+
+        <div id="game-jee" class="game-screen">
+            <button class="back-btn" onclick="goToMenu()">BACK</button>
+            <div class="ui-bar"><span id="j-score">SCORE: 0</span></div>
+            <div id="jee-board" class="neon-text board">HOLD TO RUN! DONT DIE!</div>
+            <div class="game-area">
+                <div id="jee-track">
+                    <div id="jee-safe-zone">SAFE<br>ZONE</div>
+                    <div id="jee-teacher" style="border-color: #2ecc71;">👨</div>
+                    <div id="jee-students">🏃‍♂️🏃‍♀️🏃‍♂️<br>🏃‍♀️🏃‍♂️🏃‍♀️</div>
+                </div>
+                <div id="jee-run-btn">HOLD TO RUN</div>
+            </div>
+        </div>
 
     </div>
 
     <script>
-        // --- MENÜ KONTROLÜ ---
+        // --- GENEL SİSTEM ---
+        let animFrameSolar, animFrameJee;
+        const studentFaces = ["👦", "👧", "🧒", "👱‍♂️"];
+
         function loadGame(character) {
             document.getElementById('main-menu').style.display = 'none';
             document.getElementById('game-' + character).style.display = 'flex';
-            
-            if (character === 'pobmek') startPobmekGame();
-            if (character === 'sodchuen') startSodchuenGame();
+            if (character === 'pobmek') startPobmek();
+            if (character === 'sodchuen') startSodchuen();
+            if (character === 'solar') startSolar();
+            if (character === 'jee') startJee();
         }
 
         function goToMenu() {
-            document.querySelectorAll('.game-screen').forEach(screen => screen.style.display = 'none');
+            document.querySelectorAll('.game-screen').forEach(s => s.style.display = 'none');
             document.getElementById('main-menu').style.display = 'flex';
-            
-            // Oyunları Durdur
             clearTimeout(pobmekTimeout); clearInterval(pobmekTimer);
             clearInterval(sodchuenTimer); clearInterval(sodchuenSpawner);
+            cancelAnimationFrame(animFrameSolar); clearInterval(solarSpawner);
+            cancelAnimationFrame(animFrameJee); clearTimeout(jeeLogicTimer);
         }
 
-        // --- POBMEK OYUNU ---
-        let pScore = 0, pTime = 0, naughtyIdx = -1, pMemTime = 3000, pGuessTime = 5;
+        // --- 1. POBMEK ---
+        let pScore = 0, pTime = 0, naughtyIdx = -1, pMemTime = 1500, pGuessTime = 3;
         let pobmekTimer, pobmekTimeout;
-
-        function startPobmekGame() {
-            pScore = 0; pMemTime = 3000; pGuessTime = 5;
-            document.getElementById('p-score').innerText = `Score: ${pScore}`;
-            nextPobmekRound();
-        }
+        const pEmoji = document.getElementById('pobmek-emoji');
+        
+        function startPobmek() { pScore = 0; pMemTime = 1500; pGuessTime = 3; document.getElementById('p-score').innerText = `SCORE: 0`; nextPobmekRound(); }
+        
         function nextPobmekRound() {
             document.getElementById('p-students').classList.add('disabled');
-            document.getElementById('pobmek-img').src = "pobmek_back.png";
-            document.getElementById('pobmek-board').innerText = "Memorize the class...";
-            document.getElementById('p-time').innerText = "Time: --";
+            pEmoji.style.transform = "rotateY(180deg)"; pEmoji.style.opacity = "0.5";
+            document.getElementById('pobmek-board').innerText = "MEMORIZE! (1.5s)";
+            document.getElementById('p-time').innerText = "TIME: --";
             naughtyIdx = -1;
-            for (let i = 0; i < 4; i++) document.getElementById(`stu-${i}`).src = "student_normal.png";
+            for(let i=0; i<12; i++) {
+                let box = document.getElementById(`stu-${i}`);
+                box.innerText = studentFaces[Math.floor(Math.random() * studentFaces.length)];
+                box.style.borderColor = "transparent";
+            }
             pobmekTimeout = setTimeout(turnPobmek, pMemTime);
         }
+        
         function turnPobmek() {
             document.getElementById('p-students').classList.remove('disabled');
-            document.getElementById('pobmek-img').src = "pobmek_front.png";
-            document.getElementById('pobmek-board').innerText = "Find the naughty student!";
-            naughtyIdx = Math.floor(Math.random() * 4);
-            document.getElementById(`stu-${naughtyIdx}`).src = "student_naughty.png";
-            pTime = pGuessTime;
-            document.getElementById('p-time').innerText = `Time: ${pTime}`;
-            pobmekTimer = setInterval(() => {
-                pTime--; document.getElementById('p-time').innerText = `Time: ${pTime}`;
-                if (pTime <= 0) { clearInterval(pobmekTimer); document.getElementById('pobmek-board').innerText = "GAME OVER!"; document.getElementById('p-students').classList.add('disabled'); }
+            pEmoji.style.transform = "rotateY(0deg)"; pEmoji.style.opacity = "1";
+            document.getElementById('pobmek-board').innerText = "FIND REBEL! FAST!";
+            naughtyIdx = Math.floor(Math.random()*12);
+            document.getElementById(`stu-${naughtyIdx}`).innerText = "😈"; 
+            
+            pTime = pGuessTime; document.getElementById('p-time').innerText = `TIME: ${pTime}`;
+            pobmekTimer = setInterval(() => { 
+                pTime--; document.getElementById('p-time').innerText = `TIME: ${pTime}`; 
+                if(pTime<=0){ clearInterval(pobmekTimer); document.getElementById('pobmek-board').innerText="TOO SLOW!"; document.getElementById('p-students').classList.add('disabled'); } 
             }, 1000);
         }
-        function checkPobmek(index) {
+        
+        function checkPobmek(i) {
             clearInterval(pobmekTimer);
-            if (index === naughtyIdx) {
-                pScore += 10; document.getElementById('p-score').innerText = `Score: ${pScore}`;
-                document.getElementById('pobmek-board').innerText = "Good job!";
-                if (pMemTime > 1000) pMemTime -= 200;
-                pobmekTimeout = setTimeout(nextPobmekRound, 1500);
-            } else {
-                document.getElementById('pobmek-board').innerText = "GAME OVER - Wrong student!";
-                document.getElementById('p-students').classList.add('disabled');
+            let box = document.getElementById(`stu-${i}`);
+            if(i === naughtyIdx) { 
+                pScore += 10; document.getElementById('p-score').innerText = `SCORE: ${pScore}`; document.getElementById('pobmek-board').innerText = "NICE!"; box.style.borderColor = "#2ecc71"; 
+                if(pMemTime>600) pMemTime-=100; // Giderek hızlanır
+                pobmekTimeout = setTimeout(nextPobmekRound, 1000); 
+            } else { 
+                document.getElementById('pobmek-board').innerText = "WRONG!"; box.style.borderColor = "#e74c3c"; document.getElementById('p-students').classList.add('disabled'); 
             }
         }
 
-        // --- SODCHUEN OYUNU ---
-        let sScore = 0, sTime = 30;
-        let sodchuenTimer, sodchuenSpawner;
-        let activeDoor = -1;
-
-        function startSodchuenGame() {
-            sScore = 0; sTime = 30;
-            document.getElementById('s-score').innerText = `Score: ${sScore}`;
-            document.getElementById('s-time').innerText = `Time: ${sTime}`;
-            document.getElementById('sodchuen-board').innerText = "Catch Naughty Students!";
+        // --- 2. SODCHUEN ---
+        let sScore = 0, sTime = 30, sodchuenTimer, sodchuenSpawner;
+        let activeDoors = [];
+        
+        function startSodchuen() {
+            sScore = 0; sTime = 30; activeDoors = [];
+            document.getElementById('s-score').innerText = "SCORE: 0"; document.getElementById('s-time').innerText = "TIME: 30"; document.getElementById('sodchuen-board').innerText = "CHAOS MODE!";
+            for(let i=0; i<12; i++) document.getElementById(`s-char-${i}`).classList.remove('show');
             
-            // Tüm kapıları temizle
-            for(let i=0; i<6; i++) document.getElementById(`s-char-${i}`).classList.remove('show');
-
-            sodchuenTimer = setInterval(() => {
-                sTime--; document.getElementById('s-time').innerText = `Time: ${sTime}`;
-                if (sTime <= 0) {
-                    clearInterval(sodchuenTimer); clearInterval(sodchuenSpawner);
-                    document.getElementById('sodchuen-board').innerText = "GAME OVER!";
-                    for(let i=0; i<6; i++) document.getElementById(`s-char-${i}`).classList.remove('show');
+            sodchuenTimer = setInterval(()=>{ sTime--; document.getElementById('s-time').innerText = `TIME: ${sTime}`; if(sTime<=0){clearInterval(sodchuenTimer); clearInterval(sodchuenSpawner); document.getElementById('sodchuen-board').innerText="TIME'S UP!";} },1000);
+            
+            // Aynı anda 2 veya 3 kişi fırlar, çok daha hızlı!
+            sodchuenSpawner = setInterval(()=>{
+                activeDoors.forEach(d => { document.getElementById(`s-char-${d}`).classList.remove('show'); });
+                activeDoors = [];
+                let spawnCount = Math.floor(Math.random() * 2) + 2; // 2 veya 3 kapı
+                for(let k=0; k<spawnCount; k++){
+                    let doorIdx = Math.floor(Math.random()*12);
+                    if(!activeDoors.includes(doorIdx)) {
+                        activeDoors.push(doorIdx);
+                        let el = document.getElementById(`s-char-${doorIdx}`);
+                        let isTeacher = Math.random() > 0.65; // Öğretmen çıkma ihtimali arttı
+                        el.innerText = isTeacher ? "☁️" : "😈"; 
+                        el.dataset.type = isTeacher ? "teacher" : "student";
+                        el.classList.add('show');
+                    }
                 }
-            }, 1000);
-
-            sodchuenSpawner = setInterval(spawnCharacter, 1200); // Her 1.2 saniyede bir karakter çıkar
+            }, 800);
         }
-
-        function spawnCharacter() {
-            if(activeDoor !== -1) document.getElementById(`s-char-${activeDoor}`).classList.remove('show');
-            
-            activeDoor = Math.floor(Math.random() * 6);
-            let imgEl = document.getElementById(`s-char-${activeDoor}`);
-            
-            // %75 ihtimalle yaramaz öğrenci, %25 ihtimalle öğretmen (Pobmek) çıksın
-            let isTeacher = Math.random() > 0.75; 
-            
-            imgEl.src = isTeacher ? "pobmek_front.png" : "student_naughty.png";
-            imgEl.dataset.type = isTeacher ? "teacher" : "student";
-            imgEl.classList.add('show');
-        }
-
-        function whack(index) {
-            if(index === activeDoor) {
-                let imgEl = document.getElementById(`s-char-${index}`);
-                if(imgEl.dataset.type === "student") {
-                    sScore += 10;
-                    document.getElementById('s-score').innerText = `Score: ${sScore}`;
-                    document.getElementById('sodchuen-board').innerText = "Got one!";
-                } else if(imgEl.dataset.type === "teacher") {
-                    sScore -= 10; // Öğretmene vurursan puan düşer!
-                    document.getElementById('s-score').innerText = `Score: ${sScore}`;
-                    document.getElementById('sodchuen-board').innerText = "Oops! Don't hit the teacher!";
-                }
-                imgEl.classList.remove('show');
-                activeDoor = -1;
+        function whack(i) {
+            if(activeDoors.includes(i)) {
+                let el = document.getElementById(`s-char-${i}`);
+                if(el.dataset.type === "student") { sScore+=10; document.getElementById('sodchuen-board').innerText = "GOT ONE!"; }
+                else { sScore-=20; document.getElementById('sodchuen-board').innerText = "NO TEACHERS!!"; } // Ceza arttı
+                document.getElementById('s-score').innerText = `SCORE: ${sScore}`;
+                el.classList.remove('show');
+                activeDoors = activeDoors.filter(d => d !== i);
             }
+        }
+
+        // --- 3. SOLAR ---
+        let solScore = 0, solHealth = 3, solarItems = [], solarSpeed = 6, solarSpawner; // Başlangıç hızı arttı
+        const solarPlayer = document.getElementById('solar-player');
+        const solarArea = document.getElementById('solar-area');
+        
+        solarArea.addEventListener('touchmove', (e) => {
+            let rect = solarArea.getBoundingClientRect();
+            let x = e.touches[0].clientX - rect.left;
+            if(x < 25) x = 25; if(x > rect.width - 25) x = rect.width - 25;
+            solarPlayer.style.left = x + 'px';
+        }, {passive: true});
+
+        function startSolar() {
+            solScore = 0; solHealth = 3; solarItems.forEach(i => i.el.remove()); solarItems = []; solarSpeed = 6;
+            document.getElementById('sol-score').innerText = `SCORE: 0`; document.getElementById('sol-health').innerText = `HEALTH: 3`; document.getElementById('solar-board').innerText = "BULLET HELL!";
+            
+            // Yağmur çok daha sık
+            solarSpawner = setInterval(()=>{
+                let item = document.createElement('div');
+                let isGood = Math.random() > 0.8; // Yıldız çıkma ihtimali azaldı, uçak yağacak
+                item.className = `falling-item`;
+                item.dataset.type = isGood ? 'good' : 'bad';
+                item.innerText = isGood ? "⭐" : "✈️"; 
+                item.style.left = (Math.random() * (solarArea.clientWidth - 40)) + 'px';
+                item.style.top = '-40px';
+                solarArea.appendChild(item);
+                solarItems.push({el: item, y: -40, type: item.dataset.type});
+            }, 500); // Yarım saniyede bir
+            updateSolar();
+        }
+
+        function updateSolar() {
+            if(solHealth <= 0) return;
+            let pRect = solarPlayer.getBoundingClientRect();
+            let kidsRect = document.getElementById('solar-kids').getBoundingClientRect();
+
+            for(let i = solarItems.length - 1; i >= 0; i--) {
+                let item = solarItems[i];
+                item.y += solarSpeed;
+                item.el.style.top = item.y + 'px';
+                let iRect = item.el.getBoundingClientRect();
+
+                if (iRect.bottom >= pRect.top && iRect.top <= pRect.bottom && iRect.right >= pRect.left && iRect.left <= pRect.right) {
+                    if(item.type === 'bad') { solScore += 10; }
+                    else { solHealth--; document.getElementById('solar-board').innerText = "MISSED STAR!"; }
+                    item.el.remove(); solarItems.splice(i, 1);
+                    document.getElementById('sol-score').innerText = `SCORE: ${solScore}`;
+                    document.getElementById('sol-health').innerText = `HEALTH: ${solHealth}`;
+                } 
+                else if (iRect.bottom >= kidsRect.top + 20) {
+                    if(item.type === 'bad') { solHealth--; document.getElementById('solar-board').innerText = "HIT!"; }
+                    else { solScore += 20; }
+                    item.el.remove(); solarItems.splice(i, 1);
+                    document.getElementById('sol-score').innerText = `SCORE: ${solScore}`;
+                    document.getElementById('sol-health').innerText = `HEALTH: ${solHealth}`;
+                }
+            }
+            if(solHealth <= 0) { document.getElementById('solar-board').innerText = "GAME OVER!"; clearInterval(solarSpawner); } 
+            else { solarSpeed += 0.003; animFrameSolar = requestAnimationFrame(updateSolar); }
+        }
+
+        // --- 4. JEE ---
+        let jScore = 0, isRunning = false, jeeState = 0; 
+        let studentX = 10; let jeeLogicTimer;
+        const jRunBtn = document.getElementById('jee-run-btn');
+        const jTeacher = document.getElementById('jee-teacher');
+        const jStudents = document.getElementById('jee-students');
+
+        jRunBtn.addEventListener('touchstart', (e)=>{ e.preventDefault(); isRunning = true; jRunBtn.style.background = "#ffe600"; jRunBtn.style.color = "#000"; });
+        jRunBtn.addEventListener('touchend', (e)=>{ e.preventDefault(); isRunning = false; jRunBtn.style.background = "#000"; jRunBtn.style.color = "#ffe600"; });
+        jRunBtn.addEventListener('mousedown', ()=>{ isRunning = true; jRunBtn.style.background = "#ffe600"; jRunBtn.style.color = "#000"; });
+        jRunBtn.addEventListener('mouseup', ()=>{ isRunning = false; jRunBtn.style.background = "#000"; jRunBtn.style.color = "#ffe600"; });
+        jRunBtn.addEventListener('mouseleave', ()=>{ isRunning = false; jRunBtn.style.background = "#000"; jRunBtn.style.color = "#ffe600"; });
+
+        function startJee() {
+            jScore = 0; isRunning = false; jeeState = 0; studentX = 10;
+            document.getElementById('j-score').innerText = `SCORE: 0`; document.getElementById('jee-board').innerText = "EXTREME RED LIGHT!";
+            jStudents.style.left = studentX + 'px'; setJeeState(0); jeeLogic(); updateJee();
+        }
+
+        function setJeeState(state) {
+            jeeState = state;
+            if(state === 0) { jTeacher.style.borderColor = "#2ecc71"; jTeacher.style.boxShadow = "0 0 20px #2ecc71"; jTeacher.innerText="👨"; } 
+            if(state === 1) { jTeacher.style.borderColor = "#f1c40f"; jTeacher.style.boxShadow = "0 0 30px #f1c40f"; jTeacher.innerText="⚠️"; } 
+            if(state === 2) { jTeacher.style.borderColor = "#e74c3c"; jTeacher.style.boxShadow = "0 0 40px #e74c3c"; jTeacher.innerText="🚨"; } 
+        }
+
+        function jeeLogic() {
+            let timeToNext = 1000;
+            if(jeeState === 0) {
+                timeToNext = 800 + Math.random() * 1500; // Yeşil süre çok kısa
+                jeeLogicTimer = setTimeout(()=>{ setJeeState(1); jeeLogic(); }, timeToNext);
+            } else if(jeeState === 1) {
+                timeToNext = 200 + Math.random() * 300; // Sarı süre MİLİSANİYELER sürüyor (inanılmaz zor)
+                jeeLogicTimer = setTimeout(()=>{ setJeeState(2); jeeLogic(); }, timeToNext);
+            } else if(jeeState === 2) {
+                timeToNext = 1000 + Math.random() * 1500;
+                jeeLogicTimer = setTimeout(()=>{ setJeeState(0); jeeLogic(); }, timeToNext);
+            }
+        }
+
+        function updateJee() {
+            if(jeeState === 2 && isRunning) {
+                document.getElementById('jee-board').innerText = "CAUGHT! EVERYONE DIES!";
+                setJeeState(2); clearTimeout(jeeLogicTimer); return;
+            }
+            if(isRunning && jeeState !== 2) {
+                studentX += 5; // Hızlı koşarlar ama durması zordur
+                jStudents.style.left = studentX + 'px';
+            }
+            let trackWidth = document.getElementById('jee-track').clientWidth;
+            if(studentX > trackWidth - 140) { 
+                jScore += 100; document.getElementById('j-score').innerText = `SCORE: ${jScore}`; document.getElementById('jee-board').innerText = "SURVIVED! NEXT!";
+                studentX = 10; 
+            }
+            animFrameJee = requestAnimationFrame(updateJee);
         }
     </script>
 </body>
