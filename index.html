@@ -5,20 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sukhum Udom Rak - Yellow Neon</title>
     <style>
-        /* --- SARI NEON ARCADE TEMASI --- */
-        body { margin: 0; padding: 0; background-color: #050505; color: #ffe600; font-family: 'Courier New', Courier, monospace; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; }
+        /* --- SARI NEON ARCADE & TAM EKRAN ARKA PLAN --- */
+        body { 
+            margin: 0; padding: 0; 
+            background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('arkaplan.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #ffe600; font-family: 'Courier New', Courier, monospace; 
+            display: flex; justify-content: center; align-items: center; 
+            height: 100vh; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; 
+        }
         
-        #app-container { width: 100%; max-width: 800px; height: 100%; max-height: 600px; background-color: #111; border: 4px solid #ffe600; border-radius: 15px; position: relative; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 0 20px #ffe600, inset 0 0 20px rgba(255, 230, 0, 0.1); }
+        #app-container { 
+            width: 100%; max-width: 800px; height: 100%; max-height: 600px; 
+            background-color: transparent; 
+            border: 4px solid #ffe600; border-radius: 15px; position: relative; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 0 30px #ffe600, inset 0 0 20px rgba(255, 230, 0, 0.3); 
+        }
         
         .neon-txt { color: #ffe600; text-shadow: 0 0 5px #ffe600, 0 0 10px #ffe600; text-align: center; font-weight: bold; }
         
-        /* --- ANA MENÜ (Arka plan görselin burada!) --- */
+        /* --- ANA MENÜ --- */
         #main-menu { 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
             height: 100%; padding: 20px; box-sizing: border-box; 
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('arkaplan.jpg');
-            background-size: cover;
-            background-position: center;
         }
         h1 { font-size: 32px; margin-bottom: 5px; }
         h2 { font-size: 16px; margin-bottom: 30px; color: #fff; text-shadow: none; }
@@ -34,26 +42,28 @@
         .back-btn { position: absolute; top: 15px; left: 15px; background: #000; color: #ffe600; border: 2px solid #ffe600; padding: 10px; font-family: monospace; font-weight: bold; cursor: pointer; border-radius: 5px; z-index: 50;}
         .ui-bar { display: flex; justify-content: space-between; font-size: 20px; margin-top: 50px; margin-bottom: 10px; }
         .board { font-size: 22px; margin-bottom: 10px; height: 30px; }
-        .game-area { flex-grow: 1; position: relative; overflow: hidden; border: 2px solid #ffe600; border-radius: 10px; background: #0a0a0a; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        
+        .game-area { flex-grow: 1; position: relative; overflow: hidden; border: 2px solid #ffe600; border-radius: 10px; background: rgba(10, 10, 10, 0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
-        /* POBMEK */
+        /* 1. POBMEK */
         #p-emoji { font-size: 60px; transition: 0.2s; margin-bottom: 15px; }
         .p-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 95%; justify-items: center; }
         .p-box { font-size: 45px; background: #111; border: 2px solid #333; border-radius: 10px; padding: 5px; width: 55px; height: 55px; display: flex; justify-content: center; align-items: center; transition: 0.2s; }
         .disabled { pointer-events: none; opacity: 0.5; }
 
-        /* SODCHUEN */
-        .s-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; height: 100%; padding: 10px; box-sizing: border-box;}
-        .s-door { background: #111; border: 2px solid #ffe600; border-radius: 5px; display: flex; justify-content: center; align-items: center; font-size: 50px; overflow: hidden; }
-        .s-char { transform: translateY(100%); transition: transform 0.1s; display: none; }
-        .s-char.show { display: block; transform: translateY(0); }
+        /* 2. SODCHUEN (YENİLENDİ: Daha tok ve yaylanan pencereler) */
+        .s-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 100%; padding: 15px; box-sizing: border-box;}
+        .s-door { background: rgba(17, 17, 17, 0.8); border: 3px solid #ffe600; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 55px; height: 100px; cursor: pointer; box-shadow: inset 0 0 15px rgba(255, 230, 0, 0.15); transition: 0.1s;}
+        .s-door:active { transform: scale(0.95); }
+        .s-char { transform: scale(0); transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275); } /* Asansör yerine patlayarak büyüme */
+        .s-char.show { transform: scale(1); }
 
-        /* SOLAR */
+        /* 3. SOLAR */
         #sol-player { position: absolute; bottom: 60px; font-size: 50px; left: 50%; transform: translateX(-50%); z-index: 10; }
         #sol-kids { position: absolute; bottom: 0; width: 100%; height: 60px; border-top: 2px dashed #ffe600; display: flex; justify-content: space-evenly; align-items: center; font-size: 30px; background: rgba(255, 230, 0, 0.1); }
         .sol-item { position: absolute; font-size: 35px; }
 
-        /* JEE */
+        /* 4. JEE */
         #j-track { position: relative; width: 100%; flex-grow: 1; border-bottom: 4px solid #ffe600; margin-bottom: 20px; }
         #j-safe { position: absolute; right: 0; top: 0; width: 80px; height: 100%; border-left: 2px dashed #ffe600; background: rgba(255, 230, 0, 0.1); display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; text-orientation: upright; font-weight: bold;}
         #j-teacher { position: absolute; right: 20px; top: 20px; font-size: 60px; border: 4px solid #2ecc71; border-radius: 50%; width: 70px; height: 70px; display: flex; justify-content: center; align-items: center; background: #000; box-shadow: 0 0 15px #2ecc71;}
@@ -64,7 +74,6 @@
         #win-modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 1000; flex-direction: column; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; text-align: center; }
         .win-box { background: #111; border: 4px solid #ffe600; border-radius: 15px; padding: 20px; max-width: 400px; width: 100%; box-shadow: 0 0 30px #ffe600; display: flex; flex-direction: column; align-items: center;}
         
-        /* Afişin uzantısı jpg yapıldı */
         #win-poster { max-width: 150px; height: auto; border-radius: 10px; border: 2px solid #ffe600; margin: 15px 0; display: none; }
         
         .win-txt { font-size: 14px; line-height: 1.5; margin: 10px 0; color: #fff;}
@@ -161,7 +170,7 @@
                 📱 Watch the rerun only on the oneD app
                 </p>
                 
-                <img id="win-poster" src="poster.jpg" alt="Love You Teacher" onload="this.style.display='block'" onerror="this.style.display='none'">
+                <img id="win-poster" src="poster.JPG" alt="Love You Teacher" onload="this.style.display='block'" onerror="this.style.display='none'">
                 
                 <p class="win-txt">
                 <span class="win-highlight">💛 PSSST! DON'T FORGET TO WATCH! 💛</span><br>
@@ -235,6 +244,13 @@
             nIdx = Math.floor(Math.random()*8); 
             document.getElementById(`p-${nIdx}`).innerText = "🤫";
             
+            setTimeout(()=>{
+                let bx = document.getElementById(`p-${nIdx}`);
+                if(bx && document.getElementById('p-board').innerText === "FIND THE NAUGHTY!") {
+                    bx.innerText = "😐";
+                }
+            }, 2000);
+            
             pTime = 4; 
             document.getElementById('p-time').innerText = `TIME: ${pTime}`;
             pTimer = setInterval(()=>{
@@ -257,7 +273,7 @@
             }
         }
 
-        // --- 2. SODCHUEN ---
+        // --- 2. SODCHUEN (YENİLENDİ: Vuruş Efektleri ve Yaylanan Pencereler) ---
         let sScore = 0, sTime = 30, aDoor = -1, sTimer, sSpawner;
         function startSodchuen() {
             sScore = 0; sTime = 30; document.getElementById('s-score').innerText = `SCORE: 0/50`; document.getElementById('s-time').innerText = `TIME: 30`;
@@ -286,11 +302,22 @@
                 let el = document.getElementById(`s-c${i}`);
                 if(el.dataset.hit === "true") return; 
                 el.dataset.hit = "true";
-                if(el.dataset.t === "S") { sScore+=10; document.getElementById('s-board').innerText="GOT IT!"; }
-                else { sScore-=10; document.getElementById('s-board').innerText="DON'T HIT TEACHER!"; }
+                if(el.dataset.t === "S") { 
+                    sScore+=10; document.getElementById('s-board').innerText="GOT IT!"; 
+                    el.innerText = "💥"; // Başarılı Vuruş Efekti
+                }
+                else { 
+                    sScore-=10; document.getElementById('s-board').innerText="DON'T HIT TEACHER!"; 
+                    el.innerText = "❌"; // Yanlış Vuruş Efekti
+                }
                 document.getElementById('s-score').innerText = `SCORE: ${sScore}/50`;
-                el.classList.remove('show'); aDoor = -1;
-                if(sScore >= 50) triggerWin();
+                
+                // Vuruş efektini oyuncunun görmesi için ufak bir gecikme ile kutuyu kapat
+                setTimeout(() => {
+                    el.classList.remove('show'); aDoor = -1;
+                }, 200);
+
+                if(sScore >= 50) setTimeout(triggerWin, 300);
             }
         }
 
